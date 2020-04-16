@@ -7,54 +7,46 @@ import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCardHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import {signOutStart} from '../../redux/user/user.actions';
-import { auth } from '../../firebase/firebase.utils';
+import { signOutStart } from '../../redux/user/user.actions';
 
 import './header.styles.scss';
-import { HeaderContainer, LogoContainer, OptionsContainer, OptionLink } from './header.styles'
-
+import {
+  HeaderContainer,
+  LogoContainer,
+  OptionsContainer,
+  OptionLink,
+} from './header.styles';
 
 const Header = ({ currentUser, hidden, signOutStart }) => {
-
   return (
     <HeaderContainer>
       <LogoContainer to="/">
         <Logo className="logo" />
       </LogoContainer>
       <OptionsContainer>
-        <OptionLink to="/shop">
-          SHOP
-      </OptionLink>
-        <OptionLink to="/shop">
-          CONTACT
-      </OptionLink>
-        {
-          currentUser ?
-            <OptionLink as='div' onClick={signOutStart}>
-              SIGN OUT
+        <OptionLink to="/shop">SHOP</OptionLink>
+        <OptionLink to="/shop">CONTACT</OptionLink>
+        {currentUser ? (
+          <OptionLink as="div" onClick={signOutStart}>
+            SIGN OUT
           </OptionLink>
-            :
-            <OptionLink to='/signin'>
-              SIGN IN
-          </OptionLink>
-        }
+        ) : (
+          <OptionLink to="/signin">SIGN IN</OptionLink>
+        )}
         <CartIcon />
       </OptionsContainer>
-      {
-        hidden ? null :
-          <CartDropdown />
-      }
+      {hidden ? null : <CartDropdown />}
     </HeaderContainer>
   );
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  hidden: selectCardHidden
-})
+  hidden: selectCardHidden,
+});
 
-const mapDispatchToProps = dispatch => ({
-  signOutStart: () => dispatch(signOutStart())
-})
+const mapDispatchToProps = (dispatch) => ({
+  signOutStart: () => dispatch(signOutStart()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
